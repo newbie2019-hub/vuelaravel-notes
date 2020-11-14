@@ -1,0 +1,21 @@
+.log-in {
+  background: url('../images/bg-unsplash.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  position: relative;  
+  padding: 0 !important;
+}
+
+.mobile {
+  background: linear-gradient(to bottom, rgba(196, 214, 235, 0.705), rgba(18, 21, 24, 0.692)), url('../images/bg-unsplash.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  width: 100vh;
+  height: 100vh;
+  color: white;
+}
