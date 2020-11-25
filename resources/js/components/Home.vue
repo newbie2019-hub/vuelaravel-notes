@@ -22,7 +22,7 @@
             <a class="" href="" @click.prevent="logout">Logout</a>
           </div>
           <div class="row mt-4">
-            <h6 class="mr-4"><a href="" :class="!isAddNote ? 'text-muted' : ''" @click.prevent="getNotes">Notes</a></h6>
+            <h6 class="mr-4"><a href="" @click.prevent="getNotes">Notes</a></h6>
             <h6 class="mr-4">
               <a href="" :class="isArchived ? 'text-muted' : ''" @click.prevent="getArchived">Archive</a>
             </h6>
