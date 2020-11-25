@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="loader" v-if="isLoading">
+      <div class="loader-container" v-if="isLoading">
+        <bounce-loader :loading="isLoading" :color="'rgba(74, 71, 250)'" :size="'15px'"></bounce-loader> 
+      </div>
+    </div>
     <div class="container-fluid p-0" style="height: 100vh">
       <div
         class="row h-100 w-100 justify-content-center align-items-center m-0"
@@ -141,18 +146,31 @@
 </template>
 
 <script>
+import BounceLoader from 'vue-spinner/src/BounceLoader.vue'
 export default {
+  components: {
+    BounceLoader
+  },
   async mounted() {
-    const res = await this.callApi('post', 'api/auth/me')
-    if(res.status == 200){
-     this.$router.push('/home')
-    }
-    else
-    {
-      this.$store.commit('clearToken')
-      localStorage.removeItem('username')
-      localStorage.removeItem('userid')
-    }
+    this.isLoading = true
+     const res = await this.callApi('post', `api/auth/me?token=${this.$store.state.token}`)
+      if(res.status == 201){
+        localStorage.removeItem('auth');
+        localStorage.setItem('auth', res.data.newToken);
+        console.log(res.data.newToken);
+        this.$router.push('/home')
+        this.isLoading = false
+      }
+      else if(res.status == 200){
+        this.$router.push('/home')
+        this.isLoading = false
+      }
+      else {
+        localStorage.removeItem('auth');
+        localStorage.removeItem('userid');
+        localStorage.removeItem('username');
+      }
+      this.isLoading = false
   },
   data() {
     return {
@@ -223,7 +241,6 @@ export default {
 
       if (res.status == 200 || res.status == 201) 
       {
-
         const user = await this.callApi('post', 'api/auth/me', {token: res.data.access_token})
         if(user.status == 200){
           this.success("Welcome back to your notes.");
@@ -231,8 +248,9 @@ export default {
           localStorage.setItem('username', user.data.name)
           this.$store.commit('setToken', res.data.access_token)
           this.$router.push('/home')
+          this.isLoading = false;
         }
-        
+         this.isLoading = false;
       } 
       else 
       {
@@ -275,5 +293,21 @@ a {
 
 a:hover {
   color: rgb(0, 194, 253) !important;
+}
+.loader {
+  width: 100%;
+  position: fixed;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.87);
+  top:0;
+  left: 0;
+  z-index: 25;
+}
+
+.loader-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

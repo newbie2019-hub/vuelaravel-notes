@@ -24,8 +24,6 @@ class CheckTokenValidity extends BaseMiddleware
      */
     public function handle($request, Closure $next)
     {
-        
-
         try {
 
             $user = JWTAuth::parseToken()->authenticate();
